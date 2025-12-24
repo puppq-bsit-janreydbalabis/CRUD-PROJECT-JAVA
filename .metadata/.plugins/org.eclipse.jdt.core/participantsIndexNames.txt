@@ -1,0 +1,9 @@
+INDEX VERSION 1.134
+/Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/2101390167.index
+/BooksManagement/src/main/java
+/Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/1751251604.index
+/BooksManagement/src/main/java
+/Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/64524337.index
+/BooksManagement/src/main/java
+/Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/62279222.index
+/BooksManagement/src/main/java
