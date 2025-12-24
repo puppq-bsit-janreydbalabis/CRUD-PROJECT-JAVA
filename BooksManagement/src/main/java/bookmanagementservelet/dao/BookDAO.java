@@ -1,14 +1,38 @@
 package bookmanagementservelet.dao;
 
 import bookmanagementservelet.model.Book;
+
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class BookDAO {
-	private String jdbcURL = "jdbc:mysql://localhost:3306/Bookstore?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-	private String jdbcUsername = "root";                  // change if you use different user
-	private String jdbcPassword = "Andromeda_042004";  // put your real MySQL password here
+    private String jdbcURL;
+    private String jdbcUsername;
+    private String jdbcPassword;
+    private boolean isTest = false;
+
+    public BookDAO() {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+            Properties prop = new Properties();
+            if (input == null) {
+                // This is a sign that we are in a test environment
+                isTest = true;
+                jdbcURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+                jdbcUsername = "sa";
+                jdbcPassword = "";
+                return;
+            }
+            prop.load(input);
+            this.jdbcURL = prop.getProperty("jdbcURL");
+            this.jdbcUsername = prop.getProperty("jdbcUsername");
+            this.jdbcPassword = prop.getProperty("jdbcPassword");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private static final String INSERT_BOOK_SQL = "INSERT INTO books (title, author, price) VALUES (?, ?, ?);";
     private static final String SELECT_BOOK_BY_ID = "SELECT id, title, author, price FROM books WHERE id = ?";
@@ -19,7 +43,11 @@ public class BookDAO {
     protected Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            if(isTest) {
+                Class.forName("org.h2.Driver");
+            } else {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            }
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -29,11 +57,19 @@ public class BookDAO {
 
     public void insertBook(Book book) throws SQLException {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_BOOK_SQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_BOOK_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getAuthor());
             preparedStatement.setDouble(3, book.getPrice());
             preparedStatement.executeUpdate();
+            
+            if (isTest) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        book.setId(generatedKeys.getInt(1));
+                    }
+                }
+            }
         }
     }
 

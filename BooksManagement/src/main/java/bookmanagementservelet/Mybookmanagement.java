@@ -15,6 +15,7 @@ import java.util.List;
 
 @WebServlet("/")
 public class Mybookmanagement extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private BookDAO bookDAO;
 
     public void init() {

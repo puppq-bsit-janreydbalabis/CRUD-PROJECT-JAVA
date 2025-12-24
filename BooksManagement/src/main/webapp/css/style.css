@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --light-gray: #e9ecef;
+    --white: #fff;
+    --danger-color: #dc3545;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-top: 3rem;
+}
+
+.container {
+    margin-top: 0;
+    max-width: 960px;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.card {
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--light-gray);
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+}
+
+.table {
+    background-color: var(--white);
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid var(--light-gray);
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    transform: translateY(-1px);
+}
+
+
+.feather {
+    width: 16px;
+    height: 16px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+.form-control {
+    border-radius: 6px;
+    border: 1px solid var(--light-gray);
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.delete-dialog .card-header {
+    background-color: var(--danger-color);
+    color: var(--white);
+}
+
+.delete-dialog .btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
