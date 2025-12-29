@@ -1,1 +1,0 @@
-INSERT INTO book (title, author, price, imageUrl) VALUES ('The Hobbit', 'J.R.R. Tolkien', 10.00, 'https://www.goldsborobooks.com/uploads/books/the-hobbit-90th-anniversary-edition-a-goldsboro-books-exclusive-edition-j-r-r-tolkien-9780008782766_medium.jpg');
