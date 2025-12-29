@@ -20,12 +20,12 @@ public class BookDAOTest {
 
     @Before
     public void setUp() throws Exception {
-        bookDAO = new BookDAO();
+        bookDAO = new BookDAO("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
         try {
             Class.forName("org.h2.Driver");
             connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
             Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE books (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255), author VARCHAR(255), price DOUBLE)");
+            statement.execute("CREATE TABLE book (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255), author VARCHAR(255), price FLOAT)");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class BookDAOTest {
     public void tearDown() throws Exception {
         try {
             Statement statement = connection.createStatement();
-            statement.execute("DROP TABLE books");
+            statement.execute("DROP TABLE book");
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class BookDAOTest {
 
     @Test
     public void testInsertBook() throws SQLException {
-        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00);
+        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00f);
         bookDAO.insertBook(book);
 
         List<Book> books = bookDAO.selectAllBooks();
@@ -54,7 +54,7 @@ public class BookDAOTest {
 
     @Test
     public void testSelectBook() throws SQLException {
-        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00);
+        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00f);
         bookDAO.insertBook(book);
 
         List<Book> books = bookDAO.selectAllBooks();
@@ -67,9 +67,9 @@ public class BookDAOTest {
 
     @Test
     public void testSelectAllBooks() throws SQLException {
-        Book book1 = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00);
+        Book book1 = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00f);
         bookDAO.insertBook(book1);
-        Book book2 = new Book(0, "The Lord of the Rings", "J.R.R. Tolkien", 20.00);
+        Book book2 = new Book(0, "The Lord of the Rings", "J.R.R. Tolkien", 20.00f);
         bookDAO.insertBook(book2);
 
         List<Book> books = bookDAO.selectAllBooks();
@@ -78,7 +78,7 @@ public class BookDAOTest {
 
     @Test
     public void testDeleteBook() throws SQLException {
-        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00);
+        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00f);
         bookDAO.insertBook(book);
         List<Book> books = bookDAO.selectAllBooks();
         int id = books.get(0).getId();
@@ -92,18 +92,18 @@ public class BookDAOTest {
 
     @Test
     public void testUpdateBook() throws SQLException {
-        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00);
+        Book book = new Book(0, "The Hobbit", "J.R.R. Tolkien", 10.00f);
         bookDAO.insertBook(book);
 
         List<Book> books = bookDAO.selectAllBooks();
         int id = books.get(0).getId();
 
-        Book bookToUpdate = new Book(id, "The Hobbit Updated", "J.R.R. Tolkien", 12.00);
+        Book bookToUpdate = new Book(id, "The Hobbit Updated", "J.R.R. Tolkien", 12.00f);
         boolean updated = bookDAO.updateBook(bookToUpdate);
         assertTrue(updated);
 
         Book updatedBook = bookDAO.selectBook(id);
         assertEquals("The Hobbit Updated", updatedBook.getTitle());
-        assertEquals(12.00, updatedBook.getPrice(), 0.001);
+        assertEquals(12.00f, updatedBook.getPrice(), 0.001);
     }
 }

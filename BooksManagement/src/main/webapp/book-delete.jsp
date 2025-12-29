@@ -6,17 +6,17 @@
     <meta charset="UTF-8">
     <title>Delete Book</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/custom.css">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body>
+<body style="height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center;">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-9 col-lg-8">
                 <div class="card delete-dialog">
-                    <div class="card-header">
-                        <h2 class="text-center">Delete Book Confirmation</h2>
+                    <div class="card-header" style="background-color: #800000 !important; color: white !important;">
+                        <h2 class="text-center" style="color: white !important; margin: 0;">Delete Book Confirmation</h2>
                     </div>
                     <div class="card-body">
                         <p class="text-center lead">Are you sure you want to permanently delete this book?</p>

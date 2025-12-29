@@ -1,3 +1,24 @@
+<!-- 
+    *************************************************************************
+    *** PLEASE POPULATE YOUR DATABASE                                     ***
+    *** Run the commands in the insert.sql file in your database.         ***
+    *************************************************************************
+-->
+<!-- 
+    INSTRUCTIONS TO FIX ECLIPSE ERRORS:
+
+    The errors you are seeing in Eclipse are because your project is out of sync with the Maven configuration.
+    To fix this, please follow these steps in your Eclipse IDE:
+
+    1. Right-click on the 'BooksManagement' project in the 'Project Explorer' view.
+    2. In the context menu, go to 'Maven'.
+    3. In the 'Maven' sub-menu, click on 'Update Project...'.
+    4. In the 'Update Maven Project' dialog, make sure the 'BooksManagement' project is checked.
+    5. Check the box that says 'Force update of snapshots/releases'.
+    6. Click the 'OK' button.
+
+    After Eclipse finishes updating the project, the errors should disappear.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -18,7 +39,13 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>3.1.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -56,36 +83,32 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <release>21</release>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <version>3.4.0</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.10</version>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven3-plugin</artifactId>
+                <version>1.10.11</version>
                 <configuration>
-                    <wtpversion>2.0</wtpversion>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
+                    <container>
+                        <containerId>tomcat10x</containerId>
+                        <type>embedded</type>
+                    </container>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                        </properties>
+                    </configuration>
                 </configuration>
             </plugin>
-            <plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<path>/</path>
-					<port>8080</port>
-				</configuration>
-			</plugin>
         </plugins>
     </build>
 </project>

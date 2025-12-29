@@ -10,21 +10,25 @@
     --danger-color: #dc3545;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     font-size: 16px;
     line-height: 1.6;
-    padding-top: 3rem;
 }
 
 .container {
-    margin-top: 0;
     max-width: 960px;
 }
 
 .page-header {
+    padding-top: 3rem;
     margin-bottom: 2rem;
 }
 
@@ -44,7 +48,17 @@ h1 {
     border-bottom: 1px solid var(--light-gray);
     font-size: 1.25rem;
     font-weight: 600;
-    padding: 1rem 1.5rem;
+    padding: 1.5rem;
+}
+
+.maroon-header {
+    background-color: #800000 !important;
+    color: #ffffff !important;
+}
+
+.maroon-header h2, .maroon-header h1 {
+    color: #ffffff !important;
+    margin: 0;
 }
 
 .table {
@@ -111,6 +125,15 @@ h1 {
     height: 16px;
 }
 
+.fixed-centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 1000;
+}
+
 .form-group label {
     font-weight: 600;
     font-size: 0.9rem;
@@ -127,14 +150,4 @@ h1 {
 .form-control:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.delete-dialog .card-header {
-    background-color: var(--danger-color);
-    color: var(--white);
-}
-
-.delete-dialog .btn-danger {
-    background-color: var(--danger-color);
-    border-color: var(--danger-color);
 }

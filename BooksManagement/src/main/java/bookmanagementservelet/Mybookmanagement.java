@@ -1,3 +1,17 @@
+/*
+* HAVE YOU INSERTED THE DATA?
+*
+* The application may not show any books if the database is empty.
+* Please make sure you have run the commands in the 'insert.sql' file in your database.
+*/
+/*
+* PLEASE READ:
+*
+* The errors you are seeing in Eclipse are because your project is out of sync with the Maven configuration.
+* To fix this, please open the 'pom.xml' file in the root of the project.
+* Inside 'pom.xml', you will find instructions in a comment at the top of the file.
+*
+*/
 package bookmanagementservelet;
 
 import jakarta.servlet.RequestDispatcher;
@@ -19,7 +33,12 @@ public class Mybookmanagement extends HttpServlet {
     private BookDAO bookDAO;
 
     public void init() {
-        bookDAO = new BookDAO();
+        String jdbcURL = getServletContext().getInitParameter("jdbcURL");
+        String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
+        String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
+
+        bookDAO = new BookDAO(jdbcURL, jdbcUsername, jdbcPassword);
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -93,25 +112,45 @@ public class Mybookmanagement extends HttpServlet {
     }
 
     private void insertBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         String title = request.getParameter("title");
         String author = request.getParameter("author");
-        double price = Double.parseDouble(request.getParameter("price"));
-        Book newBook = new Book(0, title, author, price);
-        bookDAO.insertBook(newBook);
-        response.sendRedirect("list");
+        String priceStr = request.getParameter("price");
+        float price = 0;
+        try {
+            price = Float.parseFloat(priceStr);
+            Book newBook = new Book(0, title, author, price);
+            bookDAO.insertBook(newBook);
+            response.sendRedirect("list");
+        } catch (NumberFormatException e) {
+            Book book = new Book(0, title, author, 0);
+            request.setAttribute("book", book);
+            request.setAttribute("error", "Invalid price format. Please enter a valid number.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("book-form.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void updateBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
         String author = request.getParameter("author");
-        double price = Double.parseDouble(request.getParameter("price"));
-
-        Book book = new Book(id, title, author, price);
-        bookDAO.updateBook(book);
-        response.sendRedirect("list");
+        String priceStr = request.getParameter("price");
+        float price = 0;
+        
+        try {
+            price = Float.parseFloat(priceStr);
+            Book book = new Book(id, title, author, price);
+            bookDAO.updateBook(book);
+            response.sendRedirect("list");
+        } catch (NumberFormatException e) {
+            Book book = new Book(id, title, author, 0);
+            request.setAttribute("book", book);
+            request.setAttribute("error", "Invalid price format. Please enter a valid number.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("book-form.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void deleteBook(HttpServletRequest request, HttpServletResponse response)

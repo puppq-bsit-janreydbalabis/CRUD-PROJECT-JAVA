@@ -2,57 +2,40 @@ package bookmanagementservelet.dao;
 
 import bookmanagementservelet.model.Book;
 
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class BookDAO {
     private String jdbcURL;
     private String jdbcUsername;
     private String jdbcPassword;
+    private Connection jdbcConnection;
     private boolean isTest = false;
 
-    public BookDAO() {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-            Properties prop = new Properties();
-            if (input == null) {
-                // This is a sign that we are in a test environment
-                isTest = true;
-                jdbcURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
-                jdbcUsername = "sa";
-                jdbcPassword = "";
-                return;
-            }
-            prop.load(input);
-            this.jdbcURL = prop.getProperty("jdbcURL");
-            this.jdbcUsername = prop.getProperty("jdbcUsername");
-            this.jdbcPassword = prop.getProperty("jdbcPassword");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static final String INSERT_BOOK_SQL = "INSERT INTO book (title, author, price) VALUES (?, ?, ?)";
+    private static final String SELECT_BOOK_BY_ID = "SELECT book_id, title, author, price FROM book WHERE book_id = ?";
+    private static final String SELECT_ALL_BOOKS = "SELECT book_id, title, author, price FROM book";
+    private static final String DELETE_BOOK_SQL = "DELETE FROM book WHERE book_id = ?";
+    private static final String UPDATE_BOOK_SQL = "UPDATE book SET title = ?, author = ?, price = ? WHERE book_id = ?";
+
+    public BookDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
+        this.jdbcURL = jdbcURL;
+        this.jdbcUsername = jdbcUsername;
+        this.jdbcPassword = jdbcPassword;
     }
 
-    private static final String INSERT_BOOK_SQL = "INSERT INTO books (title, author, price) VALUES (?, ?, ?);";
-    private static final String SELECT_BOOK_BY_ID = "SELECT id, title, author, price FROM books WHERE id = ?";
-    private static final String SELECT_ALL_BOOKS = "SELECT * FROM books;";
-    private static final String DELETE_BOOK_SQL = "DELETE FROM books WHERE id = ?;";
-    private static final String UPDATE_BOOK_SQL = "UPDATE books SET title = ?, author = ?, price = ? WHERE id = ?;";
-
-    protected Connection getConnection() {
-        Connection connection = null;
-        try {
-            if(isTest) {
-                Class.forName("org.h2.Driver");
-            } else {
+    private Connection getConnection() throws SQLException {
+        if (jdbcConnection == null || jdbcConnection.isClosed()) {
+            try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException(e);
             }
-            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            jdbcConnection = DriverManager.getConnection(
+                                        jdbcURL, jdbcUsername, jdbcPassword);
         }
-        return connection;
+        return jdbcConnection;
     }
 
     public void insertBook(Book book) throws SQLException {
@@ -60,7 +43,7 @@ public class BookDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_BOOK_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getAuthor());
-            preparedStatement.setDouble(3, book.getPrice());
+            preparedStatement.setFloat(3, book.getPrice());
             preparedStatement.executeUpdate();
             
             if (isTest) {
@@ -80,10 +63,11 @@ public class BookDAO {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
+                int book_id = rs.getInt("book_id");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
-                double price = rs.getDouble("price");
-                book = new Book(id, title, author, price);
+                float price = rs.getFloat("price");
+                book = new Book(book_id, title, author, price);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,10 +81,10 @@ public class BookDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS);) {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
+                int id = rs.getInt("book_id");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
-                double price = rs.getDouble("price");
+                float price = rs.getFloat("price");
                 books.add(new Book(id, title, author, price));
             }
         } catch (SQLException e) {
@@ -125,7 +109,7 @@ public class BookDAO {
              PreparedStatement statement = connection.prepareStatement(UPDATE_BOOK_SQL);) {
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthor());
-            statement.setDouble(3, book.getPrice());
+            statement.setFloat(3, book.getPrice());
             statement.setInt(4, book.getId());
             rowUpdated = statement.executeUpdate() > 0;
         }
