@@ -5,5 +5,9 @@ INDEX VERSION 1.134
 /BooksManagement/src/main/java
 /Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/64524337.index
 /BooksManagement/src/main/java
+/Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/1422107542.index
+/BooksManagement/src/main/java
+/Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/3099384991.index
+/BooksManagement/src/test/java
 /Users/joseph/eclipse-workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/62279222.index
 /BooksManagement/src/main/java

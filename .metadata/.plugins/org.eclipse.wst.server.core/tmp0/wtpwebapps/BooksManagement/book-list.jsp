@@ -5,46 +5,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Books Management</title>
-    <style>
-        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        center { margin: 20px; }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-    <center>
-        <h1>Books Management</h1>
-        <h2>
-            <a href="<%=request.getContextPath()%>/new">Add New Book</a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="<%=request.getContextPath()%>/list">List All Books</a>
-        </h2>
-    </center>
-    <div align="center">
-        <table>
-            <caption><h2>List of Books</h2></caption>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-            <c:forEach var="book" items="${listBook}">
-                <tr>
-                    <td><c:out value="${book.id}" /></td>
-                    <td><c:out value="${book.title}" /></td>
-                    <td><c:out value="${book.author}" /></td>
-                    <td><c:out value="${book.price}" /></td>
-                    <td>
-                        <a href="<%=request.getContextPath()%>/edit?id=<c:out value='${book.id}' />">Edit</a>
-                        &nbsp;&nbsp;
-                        <a href="<%=request.getContextPath()%>/delete?id=<c:out value='${book.id}' />">Delete</a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center page-header">
+            <h1>Books Management</h1>
+            <a href="${pageContext.request.contextPath}/new" class="btn btn-primary">
+                <i data-feather="plus"></i> Add New Book
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="book" items="${listBook}">
+                        <tr>
+                            <td><c:out value="${book.id}" /></td>
+                            <td><c:out value="${book.title}" /></td>
+                            <td><c:out value="${book.author}" /></td>
+                            <td>$<c:out value="${book.price}" /></td>
+                            <td class="text-center">
+                                <a href="${pageContext.request.contextPath}/edit?id=<c:out value='${book.id}' />" class="btn btn-sm btn-warning">
+                                    <i data-feather="edit-2"></i> Edit
+                                </a>
+                                <a href="${pageContext.request.contextPath}/delete?id=<c:out value='${book.id}' />" class="btn btn-sm btn-danger ml-2">
+                                    <i data-feather="trash-2"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <script>
+        feather.replace()
+    </script>
 </body>
 </html>
