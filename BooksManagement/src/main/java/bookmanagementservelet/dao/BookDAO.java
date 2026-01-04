@@ -13,11 +13,11 @@ public class BookDAO {
     private Connection jdbcConnection;
     private boolean isTest = false;
 
-    private static final String INSERT_BOOK_SQL = "INSERT INTO book (title, author, price) VALUES (?, ?, ?)";
-    private static final String SELECT_BOOK_BY_ID = "SELECT book_id, title, author, price FROM book WHERE book_id = ?";
-    private static final String SELECT_ALL_BOOKS = "SELECT book_id, title, author, price FROM book";
-    private static final String DELETE_BOOK_SQL = "DELETE FROM book WHERE book_id = ?";
-    private static final String UPDATE_BOOK_SQL = "UPDATE book SET title = ?, author = ?, price = ? WHERE book_id = ?";
+    private static final String INSERT_BOOK_SQL = "INSERT INTO books (title, author, price) VALUES (?, ?, ?)";
+    private static final String SELECT_BOOK_BY_ID = "SELECT id, title, author, price FROM books WHERE id = ?";
+    private static final String SELECT_ALL_BOOKS = "SELECT id, title, author, price FROM books";
+    private static final String DELETE_BOOK_SQL = "DELETE FROM books WHERE id = ?";
+    private static final String UPDATE_BOOK_SQL = "UPDATE books SET title = ?, author = ?, price = ? WHERE id = ?";
 
     public BookDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
         this.jdbcURL = jdbcURL;
@@ -63,11 +63,11 @@ public class BookDAO {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int book_id = rs.getInt("book_id");
+                int bookId = rs.getInt("id");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
                 float price = rs.getFloat("price");
-                book = new Book(book_id, title, author, price);
+                book = new Book(bookId, title, author, price);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class BookDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_BOOKS);) {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("book_id");
+                int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
                 float price = rs.getFloat("price");

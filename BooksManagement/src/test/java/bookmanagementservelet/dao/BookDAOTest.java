@@ -25,7 +25,7 @@ public class BookDAOTest {
             Class.forName("org.h2.Driver");
             connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
             Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE book (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255), author VARCHAR(255), price FLOAT)");
+            statement.execute("CREATE TABLE books (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255), author VARCHAR(255), price FLOAT)");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class BookDAOTest {
     public void tearDown() throws Exception {
         try {
             Statement statement = connection.createStatement();
-            statement.execute("DROP TABLE book");
+            statement.execute("DROP TABLE books");
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
