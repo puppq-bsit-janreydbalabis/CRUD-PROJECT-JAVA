@@ -1,17 +1,3 @@
-/*
-* HAVE YOU INSERTED THE DATA?
-*
-* The application may not show any books if the database is empty.
-* Please make sure you have run the commands in the 'insert.sql' file in your database.
-*/
-/*
-* PLEASE READ:
-*
-* The errors you are seeing in Eclipse are because your project is out of sync with the Maven configuration.
-* To fix this, please open the 'pom.xml' file in the root of the project.
-* Inside 'pom.xml', you will find instructions in a comment at the top of the file.
-*
-*/
 package bookmanagementservelet;
 
 import jakarta.servlet.RequestDispatcher;
